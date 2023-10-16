@@ -2,6 +2,7 @@ package com.framed.imagesorter.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Image {
     @JoinTable(name = "image_keyword",
             joinColumns = @JoinColumn(name = "image_id"),
             inverseJoinColumns = @JoinColumn(name = "keyword_id"))
-    private List<Keyword> keywords;
+    private List<Keyword> keywords = new ArrayList<>();
 
     // Constructors
     public Image() {}
@@ -26,6 +27,17 @@ public class Image {
         this.imageUrl = imageUrl;
     }
 
+    // Useful functions
+    public void addKeyword(Keyword keyword) {
+        if (keyword != null && !keywords.contains(keyword)) {
+            this.keywords.add(keyword);
+            keyword.getImages().add(this);
+        }
+    }
+    public void removeKeyword(Keyword keyword) {
+        keywords.remove(keyword);
+        keyword.getImages().remove(this);
+    }
 
     // Getters and setters
     public Long getId() {

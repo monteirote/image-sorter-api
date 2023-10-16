@@ -2,6 +2,7 @@ package com.framed.imagesorter.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class Keyword {
     private String name;
 
     @ManyToMany(mappedBy = "keywords")
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
 
     public Keyword() {}
 
