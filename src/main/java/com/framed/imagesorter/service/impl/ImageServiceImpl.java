@@ -44,7 +44,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Transactional
     public ImageDTO registerNewImage(String url) {
         Image imageBeingAdded = createImage(url);
         List<String> keywordsAsString = getAllKeywordsFromUrl(url);
