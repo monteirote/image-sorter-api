@@ -1,11 +1,14 @@
 package com.framed.imagesorter.service.impl;
 
+import com.framed.imagesorter.model.ImageDTO;
 import com.framed.imagesorter.model.Keyword;
 import com.framed.imagesorter.repository.KeywordRepository;
 import com.framed.imagesorter.service.KeywordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -18,18 +21,36 @@ public class KeywordServiceImpl implements KeywordService {
         this.keywordRepository = keywordRepository;
     }
 
+    @Override
     public Keyword createKeyword(String name) {
-        if (keywordRepository.findByName(name).isPresent()) {
-            return keywordRepository.findByName(name).get();
+        Optional<Keyword> existingKeyword = keywordRepository.findByName(name);
+
+        if (existingKeyword.isPresent()) {
+            return existingKeyword.get();
         } else {
-            Keyword keyword = new Keyword(name);
-            keywordRepository.save(keyword);
-            return keyword;
+            Keyword keywordAdded = new Keyword(name);
+            return keywordRepository.save(keywordAdded);
         }
     }
 
-    public Optional<Keyword> findByName(String name) {
-        return keywordRepository.findByName(name);
+    @Override
+    public Keyword findByName(String name) {
+        return keywordRepository.findByName(name).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public Keyword findById(Long id) {
+        return keywordRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public List<ImageDTO> getImagesByKeyword(String keywordName) {
+        return findByName(keywordName).getImages().stream().map(ImageDTO::new).toList();
+    }
+
+    @Override
+    public void deleteKeyword(Long id) {
+        keywordRepository.delete(findById(id));
     }
 
 }

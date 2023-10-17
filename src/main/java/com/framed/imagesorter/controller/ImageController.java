@@ -26,24 +26,29 @@ public class ImageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ImageDTO> findImageById(@PathVariable Long id) {
-        Image imageFound = imageService.findById(id);
-        return ResponseEntity.ok(new ImageDTO(imageFound));
+        ImageDTO imageFound = new ImageDTO(imageService.findById(id));
+        return ResponseEntity.ok(imageFound);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ImageDTO>> findAll() {
+        return ResponseEntity.ok(imageService.findAllImages());
     }
 
     @PostMapping("/register")
     public ResponseEntity<ImageDTO> registerNewImage(@RequestBody String url) {
-        Image imageRegistered = imageService.registerNewImage(url);
+        ImageDTO imageRegistered = imageService.registerNewImage(url);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
                 .buildAndExpand(imageRegistered.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(new ImageDTO(imageRegistered));
+        return ResponseEntity.created(location).body(imageRegistered);
     }
 
     @PutMapping("/add-keyword/{id}")
     public ResponseEntity<ImageDTO> addKeywordToImage(@RequestBody String[] keywords, @PathVariable Long id) {
-        Image updatedImage = imageService.addKeywordsToImage(id, keywords);
-        return ResponseEntity.ok(new ImageDTO(updatedImage));
+        ImageDTO updatedImage = imageService.addKeywordsToImage(id, keywords);
+        return ResponseEntity.ok(updatedImage);
     }
 
     @DeleteMapping("/{id}")

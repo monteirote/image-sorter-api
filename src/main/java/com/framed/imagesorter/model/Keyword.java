@@ -13,10 +13,10 @@ public class Keyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "keyword_name", nullable = false, unique = true)
+    @Column(name = "keyword_name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "keywords")
+    @ManyToMany(mappedBy = "keywords", fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>();
 
     public Keyword() {}

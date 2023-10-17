@@ -8,10 +8,12 @@ import com.drew.metadata.Tag;
 import com.framed.imagesorter.controller.exception.ImageIOException;
 import com.framed.imagesorter.controller.exception.ImageExtractingException;
 import com.framed.imagesorter.model.Image;
+import com.framed.imagesorter.model.ImageDTO;
 import com.framed.imagesorter.model.Keyword;
 import com.framed.imagesorter.repository.ImageRepository;
 import com.framed.imagesorter.service.ImageService;
 import com.framed.imagesorter.service.KeywordService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +32,20 @@ public class ImageServiceImpl implements ImageService {
         this.keywordService = keywordService;
     }
 
+    // Inherited methods from the interface
     @Override
     public Image findById(Long id) {
         return imageRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public Image registerNewImage(String url) {
+    public List<ImageDTO> findAllImages() {
+        return imageRepository.findAll().stream().map(ImageDTO::new).toList();
+    }
+
+    @Override
+    @Transactional
+    public ImageDTO registerNewImage(String url) {
         Image imageBeingAdded = createImage(url);
         List<String> keywordsAsString = getAllKeywordsFromUrl(url);
 
@@ -45,9 +54,43 @@ public class ImageServiceImpl implements ImageService {
         }
 
         imageRepository.save(imageBeingAdded);
-        return imageBeingAdded;
+        return new ImageDTO(imageBeingAdded);
     }
 
+    @Override
+    public ImageDTO addKeywordsToImage(Long id, String[] keywords) {
+        Image selectedImage = findById(id);
+        Arrays.asList(keywords).forEach(keyword -> {
+            Keyword kw = keywordService.createKeyword(keyword);
+            selectedImage.addKeyword(kw);
+        });
+        return new ImageDTO(imageRepository.save(selectedImage));
+    }
+
+    @Override
+    public void deleteImage(Long id) {
+        imageRepository.delete(findById(id));
+    }
+
+
+    // OTHER METHODS
+
+    // method to persist the image in the database but without any keywords associated.
+    private Image createImage(String url) {
+        if (imageRepository.existsByImageUrl(url) || !isUrlValid(url)) {
+            throw new IllegalArgumentException("This image URL is not valid.");
+        }
+        System.out.println("teste");
+        Image imageToSave = new Image(url);
+        imageRepository.save(imageToSave);
+        System.out.println("teste2");
+        return imageToSave;
+//        Image imageToSave = new Image(url);
+//        imageRepository.save(imageToSave);
+//        return imageToSave;
+    }
+
+    // method used to extract the metadata from the image received by its url.
     private Metadata extractMetadataFromImage(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
@@ -59,6 +102,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    // method to extract just the keywords from the image metadata.
     private List<String> getAllKeywordsFromUrl(String imageUrl) {
         Metadata metadata = extractMetadataFromImage(imageUrl);
 
@@ -69,30 +113,10 @@ public class ImageServiceImpl implements ImageService {
                 }
             }
         }
-
         return Collections.emptyList();
     }
 
-
-
-
-
-    @Override
-    public Image addKeywordsToImage(Long id, String[] keywords) {
-        Image selectedImage = findById(id);
-        Arrays.asList(keywords).forEach(keyword -> {
-            Keyword kw = keywordService.createKeyword(keyword);
-            selectedImage.addKeyword(kw);
-        });
-        return imageRepository.save(selectedImage);
-    }
-
-    @Override
-    public void deleteImage(Long id) {
-        Image imageToDelete = findById(id);
-        imageRepository.delete(imageToDelete);
-    }
-
+    // method to check if the url is valid or not.
     private boolean isUrlValid(String url) {
         try {
             new java.net.URL(url);
@@ -100,12 +124,5 @@ public class ImageServiceImpl implements ImageService {
         } catch (java.net.MalformedURLException e) {
             return false;
         }
-    }
-
-    private Image createImage(String url) {
-        if (imageRepository.existsByImageUrl(url) && !isUrlValid(url)) {
-            throw new IllegalArgumentException("This image URL is not valid.");
-        }
-        return imageRepository.save(new Image(url));
     }
 }
