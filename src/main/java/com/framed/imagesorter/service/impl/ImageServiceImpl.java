@@ -68,7 +68,14 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void deleteImage(Long id) {
-        imageRepository.delete(findById(id));
+        Image imageToDelete = findById(id);
+        List<Keyword> keywordsToCheck = imageToDelete.getKeywords();
+        imageRepository.delete(imageToDelete);
+        for (Keyword k : keywordsToCheck) {
+            if (k.getImages().size() == 1) {
+                keywordService.deleteKeyword(k.getId());
+            }
+        }
     }
 
 
@@ -84,9 +91,6 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.save(imageToSave);
         System.out.println("teste2");
         return imageToSave;
-//        Image imageToSave = new Image(url);
-//        imageRepository.save(imageToSave);
-//        return imageToSave;
     }
 
     // method used to extract the metadata from the image received by its url.
