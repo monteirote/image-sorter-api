@@ -1,12 +1,15 @@
 package com.framed.imagesorter.service.impl;
 
+import com.framed.imagesorter.model.Image;
 import com.framed.imagesorter.model.ImageDTO;
 import com.framed.imagesorter.model.Keyword;
 import com.framed.imagesorter.repository.KeywordRepository;
+import com.framed.imagesorter.service.ImageService;
 import com.framed.imagesorter.service.KeywordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

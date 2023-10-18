@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_image")
@@ -62,5 +63,17 @@ public class Image {
 
     public void setKeywords(List<Keyword> keywords) {
         this.keywords = keywords;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Image image)) return false;
+        return Objects.equals(getId(), image.getId()) && Objects.equals(getImageUrl(), image.getImageUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

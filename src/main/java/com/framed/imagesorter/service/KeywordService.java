@@ -19,4 +19,5 @@ public interface KeywordService {
     List<ImageDTO> getImagesByKeyword(String keywordName);
 
     void deleteKeyword(Long id);
+
 }
