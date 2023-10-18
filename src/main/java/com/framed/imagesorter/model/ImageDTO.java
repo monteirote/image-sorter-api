@@ -1,6 +1,7 @@
 package com.framed.imagesorter.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ImageDTO {
 
@@ -40,5 +41,17 @@ public class ImageDTO {
 
     public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ImageDTO imageDTO)) return false;
+        return Objects.equals(getId(), imageDTO.getId()) && Objects.equals(getImageUrl(), imageDTO.getImageUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getImageUrl());
     }
 }

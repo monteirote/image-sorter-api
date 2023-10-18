@@ -45,6 +45,7 @@ public class ImageController {
         return ResponseEntity.created(location).body(imageRegistered);
     }
 
+
     @PutMapping("/add-keyword/{id}")
     public ResponseEntity<ImageDTO> addKeywordToImage(@RequestBody String[] keywords, @PathVariable Long id) {
         ImageDTO updatedImage = imageService.addKeywordsToImage(id, keywords);

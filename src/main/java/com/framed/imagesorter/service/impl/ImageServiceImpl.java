@@ -86,10 +86,8 @@ public class ImageServiceImpl implements ImageService {
         if (imageRepository.existsByImageUrl(url) || !isUrlValid(url)) {
             throw new IllegalArgumentException("This image URL is not valid.");
         }
-        System.out.println("teste");
         Image imageToSave = new Image(url);
         imageRepository.save(imageToSave);
-        System.out.println("teste2");
         return imageToSave;
     }
 
