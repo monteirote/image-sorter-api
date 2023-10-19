@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class ImageControllerTest {
+class ImageControllerUnitTest {
 
     @Autowired
     private ImageController imageController;

@@ -39,7 +39,9 @@ public class ImageAndKeywordTests {
         Keyword keyword1 = new Keyword("keywordTest");
 
         img1.addKeyword(keyword1);
+        img1.addKeyword(null);
         assertTrue(img1.getKeywords().contains(keyword1) && keyword1.getImages().contains(img1));
+        assertFalse(img1.getKeywords().contains(keyword1) && keyword1.getImages().contains(null));
 
         img1.removeKeyword(keyword1);
         assertTrue(img1.getKeywords().isEmpty());
