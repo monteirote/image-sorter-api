@@ -2,8 +2,6 @@ package com.framed.imagesorter;
 
 import com.framed.imagesorter.model.Image;
 import com.framed.imagesorter.model.Keyword;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

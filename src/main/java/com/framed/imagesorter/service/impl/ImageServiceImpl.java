@@ -86,9 +86,7 @@ public class ImageServiceImpl implements ImageService {
         if (imageRepository.existsByImageUrl(url) || !isUrlValid(url)) {
             throw new IllegalArgumentException("This image URL is not valid.");
         }
-        Image imageToSave = new Image(url);
-        imageRepository.save(imageToSave);
-        return imageToSave;
+        return imageRepository.save(new Image(url));
     }
 
     // method used to extract the metadata from the image received by its url.
