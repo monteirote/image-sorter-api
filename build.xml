@@ -1,0 +1,10 @@
+<project name="MyProject" default="create-jar" basedir=".">
+    <target name="create-jar">
+        <jar destfile="tasks.jar">
+            <manifest>
+                <attribute name="Main-Class" value="com.framed.imagesorter.ImageSorterApplication"/>
+            </manifest>
+            <fileset dir="classes"/>
+        </jar>
+    </target>
+</project>
