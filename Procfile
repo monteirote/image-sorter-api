@@ -1,1 +1,1 @@
-web: java -jar target/image-sorter-0.0.1-SNAPSHOT.jar
+web: java -jar build/libs/image-sorting-api-0.0.1-SNAPSHOT.jar
