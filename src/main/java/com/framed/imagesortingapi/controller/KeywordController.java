@@ -1,6 +1,7 @@
 package com.framed.imagesortingapi.controller;
 
 import com.framed.imagesortingapi.model.ImageDTO;
+import com.framed.imagesortingapi.model.Keyword;
 import com.framed.imagesortingapi.service.KeywordService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,11 @@ public class KeywordController {
     @GetMapping("/{keywordName}")
     public ResponseEntity<List<ImageDTO>> getImagesByKeyword(@PathVariable String keywordName) {
         return ResponseEntity.ok(keywordService.getImagesByKeyword(keywordName));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<String>> getAllKeywords() {
+        return ResponseEntity.ok(keywordService.getAllKeywords().stream().map(Keyword::getName).toList());
     }
 
 
