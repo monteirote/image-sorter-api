@@ -1,6 +1,8 @@
 package com.framed.imagesortingapi.model;
 
+import com.framed.imagesortingapi.repository.KeywordRepository;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,11 @@ public class Keyword {
 
     public List<Image> getImages() {
         return images;
+    }
+
+    public boolean removeImagem(Image imageToDelete) {
+        this.getImages().remove(imageToDelete);
+        return getImages().isEmpty();
     }
 
     public void setImages(List<Image> images) {

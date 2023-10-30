@@ -21,6 +21,8 @@ public interface KeywordService {
 
     void deleteKeyword(Long id);
 
+    void deleteAllKeywords(List<Keyword> keywords);
+
     List<Keyword> getAllKeywords();
 
 }

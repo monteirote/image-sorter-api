@@ -40,10 +40,15 @@ public class ImageController {
         return ResponseEntity.created(location).body(imageRegistered);
     }
 
-
     @PutMapping("/add-keyword/{id}")
     public ResponseEntity<ImageDTO> addKeywordToImage(@RequestBody String[] keywords, @PathVariable Long id) {
         ImageDTO updatedImage = imageService.addKeywordsToImage(id, keywords);
+        return ResponseEntity.ok(updatedImage);
+    }
+
+    @PutMapping("/remove-keyword/{id}")
+    public ResponseEntity<ImageDTO> removeKeywordFromImage(@RequestBody String[] keywords, @PathVariable Long id) {
+        ImageDTO updatedImage = imageService.removeKeywordsFromImage(id, keywords);
         return ResponseEntity.ok(updatedImage);
     }
 

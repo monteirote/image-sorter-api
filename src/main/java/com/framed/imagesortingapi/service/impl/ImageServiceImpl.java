@@ -69,6 +69,20 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public ImageDTO removeKeywordsFromImage(Long id, String[] keywords) {
+        Image selectedImage = findById(id);
+        Arrays.asList(keywords).forEach(keyword -> {
+            Keyword kw = keywordService.createKeyword(keyword);
+            selectedImage.removeKeyword(kw);
+            imageRepository.save(selectedImage);
+            if (kw.getImages().isEmpty()) {
+                keywordService.deleteKeyword(kw.getId());
+            }
+        });
+        return new ImageDTO(selectedImage);
+    }
+
+    @Override
     public void deleteImage(Long id) {
         Image imageToDelete = findById(id);
         List<Keyword> keywordsToCheck = imageToDelete.getKeywords();
@@ -88,7 +102,7 @@ public class ImageServiceImpl implements ImageService {
         if (imageRepository.existsByImageUrl(url) || !isUrlValid(url)) {
             throw new IllegalArgumentException("This image URL is not valid.");
         }
-        return imageRepository.save(new Image(url));
+        return new Image(url);
     }
 
     // method used to extract the metadata from the image received by its url.

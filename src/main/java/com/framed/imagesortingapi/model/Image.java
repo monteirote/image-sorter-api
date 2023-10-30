@@ -35,9 +35,9 @@ public class Image {
             keyword.getImages().add(this);
         }
     }
-    public void removeKeyword(Keyword keyword) {
+    public boolean removeKeyword(Keyword keyword) {
         keywords.remove(keyword);
-        keyword.getImages().remove(this);
+        return keyword.removeImagem(this);
     }
 
     // Getters and setters

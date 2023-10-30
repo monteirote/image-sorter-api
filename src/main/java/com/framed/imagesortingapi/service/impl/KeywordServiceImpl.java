@@ -73,4 +73,8 @@ public class KeywordServiceImpl implements KeywordService {
         return keywordRepository.findAll();
     }
 
+    public void deleteAllKeywords(List<Keyword> keywords) {
+        this.keywordRepository.deleteAll(keywords);
+    }
+
 }

@@ -15,5 +15,7 @@ public interface ImageService {
 
     ImageDTO addKeywordsToImage(Long id, String[] keywords);
 
+    ImageDTO removeKeywordsFromImage(Long id, String[] keywords);
+
     void deleteImage(Long id);
 }
